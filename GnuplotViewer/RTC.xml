@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rtc:RtcProfile rtc:version="0.2" rtc:id="RTC:TakeshiSasaki:generic:GnuplotViewer:1.1.0" xmlns:rtc="http://www.openrtp.org/namespaces/rtc" xmlns:rtcExt="http://www.openrtp.org/namespaces/rtc_ext" xmlns:rtcDoc="http://www.openrtp.org/namespaces/rtc_doc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="GnuplotViewer" rtc:updateDate="2013-06-12T21:13:57+09:00" rtc:creationDate="2013-06-12T19:21:51+09:00" rtc:abstract="gnuplotを用いた汎用ビューワ。 Configurationのp{Short,Long,Float,Double}InPortNumの値を設定してアクティブ化すると対応する入力ポートがその数だけ生成されるとともにgnuplotを起動する。 このとき、ConfigurationのgpOpenOptionにgnuplotの起動オプションが与えられていれば、そのオプションにしたがってgnuplotをオープンする。 アクティブ化後は新しいデータが入力される度にConfigurationのgpPeriodicExecCommandに記入されたコマンドを実行する。 InPortから入力されたデータは例えば3つ目のshort型ポートへのデータであれば&quot;short[2]&quot;、最初のlong型ポートへのデータであれば&quot;long[0]&quot;で参照できる。 また、InPortのCommandからgnuplotにコマンドを送ることも可能である。" rtc:version="1.1.0" rtc:vendor="TakeshiSasaki" rtc:maxInstances="0" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="Versatile viewer component using gnuplot" rtc:category="generic" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="COMMUTATIVE" rtc:name="GnuplotViewer">
+        <rtcDoc:Doc rtcDoc:reference="" rtcDoc:license="" rtcDoc:creator="佐々木毅 (Takeshi SASAKI)&lt;br/&gt;sasaki-t(_at_)ieee.org" rtcDoc:algorithm="" rtcDoc:inout="InPort&lt;br/&gt;ポート名/型/説明&lt;br/&gt;Command/TimedString/gnuplotに送るコマンド。&lt;br/&gt;ShortSeqData/DynamicInPort&lt;TimedShortSeq&gt;/プロットするshort型整数値列データ。&lt;br/&gt;LongSeqData/DynamicInPort&lt;TimedLongSeq&gt;/プロットするlong型整数値列データ。&lt;br/&gt;FloatSeqData/DynamicInPort&lt;TimedFloatSeq&gt;/プロットするfloat型実数値列データ。&lt;br/&gt;DoubleSeqData/DynamicInPort&lt;TimedDoubleSeq&gt;/プロットするdouble型実数値列データ。" rtcDoc:description="gnuplotを用いた汎用ビューワ。&lt;br/&gt;Configurationのp{Short,Long,Float,Double}InPortNumの値を設定してアクティブ化すると対応する入力ポートがその数だけ生成されるとともにgnuplotを起動する。&lt;br/&gt;このとき、ConfigurationのgpOpenOptionにgnuplotの起動オプションが与えられていれば、そのオプションにしたがってgnuplotをオープンする。&lt;br/&gt;アクティブ化後は新しいデータが入力される度にConfigurationのgpPeriodicExecCommandに記入されたコマンドを実行する。&lt;br/&gt;InPortから入力されたデータは例えば3つ目のshort型ポートへのデータであれば&quot;short[2]&quot;、最初のlong型ポートへのデータであれば&quot;long[0]&quot;で参照できる。&lt;br/&gt;また、InPortのCommandからgnuplotにコマンドを送ることも可能である。"/>
+        <rtcExt:VersionUpLogs></rtcExt:VersionUpLogs>
+        <rtcExt:VersionUpLogs></rtcExt:VersionUpLogs>
+    </rtc:BasicInfo>
+    <rtc:Actions>
+        <rtc:OnInitialize xsi:type="rtcDoc:action_status_doc" rtc:implemented="true"/>
+        <rtc:OnFinalize xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnStartup xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnShutdown xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnActivated xsi:type="rtcDoc:action_status_doc" rtc:implemented="true">
+            <rtcDoc:Doc rtcDoc:postCondition="" rtcDoc:preCondition="" rtcDoc:description="Configurationのp{Short,Long,Float,Double}InPortNumの値に応じて動的入力ポートの生成を行う。&lt;br/&gt;また、gnuplotを起動する。&lt;br/&gt;このとき、ConfigurationのgpOpenOptionにgnuplotの起動オプションが与えられていれば、そのオプションにしたがってgnuplotをオープンする。"/>
+        </rtc:OnActivated>
+        <rtc:OnDeactivated xsi:type="rtcDoc:action_status_doc" rtc:implemented="true">
+            <rtcDoc:Doc rtcDoc:postCondition="" rtcDoc:preCondition="" rtcDoc:description="動的入力ポートの削除とgnuplotのクローズを行う。"/>
+        </rtc:OnDeactivated>
+        <rtc:OnAborting xsi:type="rtcDoc:action_status_doc" rtc:implemented="true">
+            <rtcDoc:Doc rtcDoc:postCondition="" rtcDoc:preCondition="" rtcDoc:description="動的入力ポートの削除とgnuplotのクローズを行う。"/>
+        </rtc:OnAborting>
+        <rtc:OnError xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnReset xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnExecute xsi:type="rtcDoc:action_status_doc" rtc:implemented="true">
+            <rtcDoc:Doc rtcDoc:postCondition="" rtcDoc:preCondition="" rtcDoc:description="InPortのCommandに送られてきたgnuplotのコマンドを実行する。&lt;br/&gt;InPortの{Short,Long,Float,Double}SeqDataに送られてきたデータをConfigurationのgpSeparatePosの形式にしたがって保存する。&lt;br/&gt;新しいデータが入力される度にConfigurationのgpPeriodicExecCommandに記入されたコマンドを実行する。"/>
+        </rtc:OnExecute>
+        <rtc:OnStateUpdate xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnRateChanged xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnAction xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+        <rtc:OnModeChanged xsi:type="rtcDoc:action_status_doc" rtc:implemented="false"/>
+    </rtc:Actions>
+    <rtc:ConfigurationSet>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="*" rtc:type="string" rtc:name="gpOpenOption">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="gnuplotを開く際のオプション。&lt;br/&gt;アクティブ化時に読み込みを行う。&lt;br/&gt;デフォルト値の場合は、オプションなしで開く。&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="*" rtcDoc:dataname="gpOpenOption"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="1" rtc:type="string" rtc:name="gpSeparatePos">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="データの区切り位置のリスト。&lt;br/&gt;コロン(:)を区切り文字として指定する。(例 4:2:3)&lt;br/&gt;指定されなかったポートの値は1となる。" rtcDoc:defaultValue="1" rtcDoc:dataname="gpSeparatePos"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="*" rtc:type="string" rtc:name="gpPeriodicExecCommand">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="gnuplotが周期実行するコマンド。&lt;br/&gt;コンポーネントに新しいデータが入力される度に実行される。&lt;br/&gt;デフォルト値の場合は何も実行しない。" rtcDoc:defaultValue="*" rtcDoc:dataname="gpPeriodicExecCommand"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="0" rtc:type="int" rtc:name="pShortInPortNum">
+            <rtc:Constraint>
+                <rtc:ConstraintUnitType>
+                    <rtc:propertyIsGreaterThanOrEqualTo rtc:matchCase="false">
+                        <rtc:Literal>0</rtc:Literal>
+                    </rtc:propertyIsGreaterThanOrEqualTo>
+                </rtc:ConstraintUnitType>
+            </rtc:Constraint>
+            <rtcDoc:Doc rtcDoc:constraint="x&gt;=0" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="TimedShortSeq型InPortのポート数。&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="0" rtcDoc:dataname="pShortInPortNum"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="0" rtc:type="int" rtc:name="pLongInPortNum">
+            <rtc:Constraint>
+                <rtc:ConstraintUnitType>
+                    <rtc:propertyIsGreaterThanOrEqualTo rtc:matchCase="false">
+                        <rtc:Literal>0</rtc:Literal>
+                    </rtc:propertyIsGreaterThanOrEqualTo>
+                </rtc:ConstraintUnitType>
+            </rtc:Constraint>
+            <rtcDoc:Doc rtcDoc:constraint="x&gt;=0" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="TimedLongSeq型InPortのポート数。&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="0" rtcDoc:dataname="pLongInPortNum"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="0" rtc:type="int" rtc:name="pFloatInPortNum">
+            <rtc:Constraint>
+                <rtc:ConstraintUnitType>
+                    <rtc:propertyIsGreaterThanOrEqualTo rtc:matchCase="false">
+                        <rtc:Literal>0</rtc:Literal>
+                    </rtc:propertyIsGreaterThanOrEqualTo>
+                </rtc:ConstraintUnitType>
+            </rtc:Constraint>
+            <rtcDoc:Doc rtcDoc:constraint="x&gt;=0" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="TimedFloatSeq型InPortのポート数。&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="0" rtcDoc:dataname="pFloatInPortNum"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="0" rtc:type="int" rtc:name="pDoubleInPortNum">
+            <rtc:Constraint>
+                <rtc:ConstraintUnitType>
+                    <rtc:propertyIsGreaterThanOrEqualTo rtc:matchCase="false">
+                        <rtc:Literal>0</rtc:Literal>
+                    </rtc:propertyIsGreaterThanOrEqualTo>
+                </rtc:ConstraintUnitType>
+            </rtc:Constraint>
+            <rtcDoc:Doc rtcDoc:constraint="x&gt;=0" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="TimedDoubleSeq型InPortのポート数。&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="0" rtcDoc:dataname="pDoubleInPortNum"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="" rtc:defaultValue="*" rtc:type="string" rtc:name="gpPath">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="gnuplotへのパス。&lt;br/&gt;デフォルト値の場合はカレントフォルダから開く。（環境変数にすでにパスが指定されているなど、カレントフォルダからgnuplotを開ける場合はデフォルトのままでよい。）&lt;br/&gt;アクティブ状態での変更は無効（反映されない）。" rtcDoc:defaultValue="*" rtcDoc:dataname="gpPath"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+    </rtc:ConfigurationSet>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="C:\Program Files\OpenRTM-aist\1.2.0\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedString" rtc:name="Command" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="" rtcDoc:semantics="" rtcDoc:number="" rtcDoc:type="TimedString" rtcDoc:description="gnuplotに送るコマンド。"/>
+    </rtc:DataPorts>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="C:\Program Files\OpenRTM-aist\1.2.0\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedShortSeq" rtc:name="ShortSeqData" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="データに依存" rtcDoc:semantics="" rtcDoc:number="データに依存" rtcDoc:type="DynamicInPort&lt;TimedShortSeq&gt;" rtcDoc:description="プロットするshort型整数値列データ。"/>
+    </rtc:DataPorts>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="C:\Program Files\OpenRTM-aist\1.2.0\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedLongSeq" rtc:name="LongSeqData" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="データに依存" rtcDoc:semantics="" rtcDoc:number="データに依存" rtcDoc:type="DynamicInPort&lt;TimedLongSeq&gt;" rtcDoc:description="プロットするlong型整数値列データ。"/>
+    </rtc:DataPorts>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="C:\Program Files\OpenRTM-aist\1.2.0\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedFloatSeq" rtc:name="FloatSeqData" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="データに依存" rtcDoc:semantics="" rtcDoc:number="データに依存" rtcDoc:type="DynamicInPort&lt;TimedFloatSeq&gt;" rtcDoc:description="プロットするfloat型実数値列データ。"/>
+    </rtc:DataPorts>
+    <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="C:\Program Files\OpenRTM-aist\1.2.0\rtm\idl\BasicDataType.idl" rtc:type="RTC::TimedDoubleSeq" rtc:name="DoubleSeqData" rtc:portType="DataInPort">
+        <rtcDoc:Doc rtcDoc:operation="" rtcDoc:occerrence="" rtcDoc:unit="データに依存" rtcDoc:semantics="" rtcDoc:number="データに依存" rtcDoc:type="DynamicInPort&lt;TimedDoubleSeq&gt;" rtcDoc:description="プロットするdouble型実数値列データ。"/>
+    </rtc:DataPorts>
+    <rtc:Language xsi:type="rtcExt:language_ext" rtc:kind="C++"/>
+</rtc:RtcProfile>

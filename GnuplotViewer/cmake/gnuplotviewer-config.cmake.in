@@ -1,0 +1,54 @@
+# GnuplotViewer CMake config file
+#
+# This file sets the following variables:
+# GnuplotViewer_FOUND - Always TRUE.
+# GnuplotViewer_INCLUDE_DIRS - Directories containing the GnuplotViewer include files.
+# GnuplotViewer_IDL_DIRS - Directories containing the GnuplotViewer IDL files.
+# GnuplotViewer_LIBRARIES - Libraries needed to use GnuplotViewer.
+# GnuplotViewer_DEFINITIONS - Compiler flags for GnuplotViewer.
+# GnuplotViewer_VERSION - The version of GnuplotViewer found.
+# GnuplotViewer_VERSION_MAJOR - The major version of GnuplotViewer found.
+# GnuplotViewer_VERSION_MINOR - The minor version of GnuplotViewer found.
+# GnuplotViewer_VERSION_REVISION - The revision version of GnuplotViewer found.
+# GnuplotViewer_VERSION_CANDIDATE - The candidate version of GnuplotViewer found.
+
+message(STATUS "Found GnuplotViewer-@PROJECT_VERSION@")
+set(GnuplotViewer_FOUND TRUE)
+
+find_package(<dependency> REQUIRED)
+
+#set(GnuplotViewer_INCLUDE_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@"
+#    ${<dependency>_INCLUDE_DIRS}
+#    )
+#
+#set(GnuplotViewer_IDL_DIRS
+#    "@CMAKE_INSTALL_PREFIX@/include/@PROJECT_NAME_LOWER@-@PROJECT_VERSION_MAJOR@/idl")
+set(GnuplotViewer_INCLUDE_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@"
+    ${<dependency>_INCLUDE_DIRS}
+    )
+set(GnuplotViewer_IDL_DIRS
+    "@CMAKE_INSTALL_PREFIX@/include/@CPACK_PACKAGE_FILE_NAME@/idl")
+
+
+if(WIN32)
+    set(GnuplotViewer_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_STATIC_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+else(WIN32)
+    set(GnuplotViewer_LIBRARIES
+        "@CMAKE_INSTALL_PREFIX@/@LIB_INSTALL_DIR@/@CMAKE_SHARED_LIBRARY_PREFIX@@PROJECT_NAME_LOWER@@CMAKE_SHARED_LIBRARY_SUFFIX@"
+        ${<dependency>_LIBRARIES}
+        )
+endif(WIN32)
+
+set(GnuplotViewer_DEFINITIONS ${<dependency>_DEFINITIONS})
+
+set(GnuplotViewer_VERSION @PROJECT_VERSION@)
+set(GnuplotViewer_VERSION_MAJOR @PROJECT_VERSION_MAJOR@)
+set(GnuplotViewer_VERSION_MINOR @PROJECT_VERSION_MINOR@)
+set(GnuplotViewer_VERSION_REVISION @PROJECT_VERSION_REVISION@)
+set(GnuplotViewer_VERSION_CANDIDATE @PROJECT_VERSION_CANDIDATE@)
+
