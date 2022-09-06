@@ -1,25 +1,29 @@
 ﻿// -*- C++ -*-
+// <rtc-template block="description">
 /*!
  * @file  GnuplotViewerTest.cpp
- * @brief Versatile viewer component using gnuplot
- * @date $Date$
+ * @brief Versatile viewer component using gnuplot (test code)
  *
  * @author 佐々木毅 (Takeshi SASAKI)
  * sasaki-t(_at_)ieee.org
  *
- * $Id$
  */
+// </rtc-template>
 
 #include "GnuplotViewerTest.h"
 
 // Module specification
 // <rtc-template block="module_spec">
+#if RTM_MAJOR_VERSION >= 2
+static const char* const gnuplotviewer_spec[] =
+#else
 static const char* gnuplotviewer_spec[] =
+#endif
   {
     "implementation_id", "GnuplotViewerTest",
     "type_name",         "GnuplotViewerTest",
     "description",       "Versatile viewer component using gnuplot",
-    "version",           "1.1.0",
+    "version",           "1.2.0",
     "vendor",            "TakeshiSasaki",
     "category",          "generic",
     "activity_type",     "PERIODIC",
@@ -72,11 +76,11 @@ static const char* gnuplotviewer_spec[] =
 GnuplotViewerTest::GnuplotViewerTest(RTC::Manager* manager)
     // <rtc-template block="initializer">
   : RTC::DataFlowComponentBase(manager),
-    m_CommandIn("Command", m_Command),
-    m_ShortSeqDataIn("ShortSeqData", m_ShortSeqData),
-    m_LongSeqDataIn("LongSeqData", m_LongSeqData),
-    m_FloatSeqDataIn("FloatSeqData", m_FloatSeqData),
-    m_DoubleSeqDataIn("DoubleSeqData", m_DoubleSeqData)
+    m_CommandOut("Command", m_Command),
+    m_ShortSeqDataOut("ShortSeqData", m_ShortSeqData),
+    m_LongSeqDataOut("LongSeqData", m_LongSeqData),
+    m_FloatSeqDataOut("FloatSeqData", m_FloatSeqData),
+    m_DoubleSeqDataOut("DoubleSeqData", m_DoubleSeqData)
 
     // </rtc-template>
 {
@@ -134,19 +138,17 @@ RTC::ReturnCode_t GnuplotViewerTest::onFinalize()
 }
 */
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onStartup(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onShutdown(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t GnuplotViewerTest::onStartup(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t GnuplotViewerTest::onShutdown(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 /*!
  * Configurationのp{Short,Long,Float,Double}InPortNumの値に応じて動
@@ -157,7 +159,7 @@ RTC::ReturnCode_t GnuplotViewerTest::onShutdown(RTC::UniqueId ec_id)
  * る。
  */
 
-RTC::ReturnCode_t GnuplotViewerTest::onActivated(RTC::UniqueId ec_id)
+RTC::ReturnCode_t GnuplotViewerTest::onActivated(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
@@ -166,7 +168,7 @@ RTC::ReturnCode_t GnuplotViewerTest::onActivated(RTC::UniqueId ec_id)
  * 動的入力ポートの削除とgnuplotのクローズを行う。
  */
 
-RTC::ReturnCode_t GnuplotViewerTest::onDeactivated(RTC::UniqueId ec_id)
+RTC::ReturnCode_t GnuplotViewerTest::onDeactivated(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
@@ -179,7 +181,7 @@ RTC::ReturnCode_t GnuplotViewerTest::onDeactivated(RTC::UniqueId ec_id)
  * dに記入されたコマンドを実行する。
  */
 
-RTC::ReturnCode_t GnuplotViewerTest::onExecute(RTC::UniqueId ec_id)
+RTC::ReturnCode_t GnuplotViewerTest::onExecute(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
@@ -188,39 +190,40 @@ RTC::ReturnCode_t GnuplotViewerTest::onExecute(RTC::UniqueId ec_id)
  * 動的入力ポートの削除とgnuplotのクローズを行う。
  */
 
-RTC::ReturnCode_t GnuplotViewerTest::onAborting(RTC::UniqueId ec_id)
+RTC::ReturnCode_t GnuplotViewerTest::onAborting(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onError(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onReset(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t GnuplotViewerTest::onError(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onStateUpdate(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t GnuplotViewerTest::onRateChanged(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t GnuplotViewerTest::onReset(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
+
+//RTC::ReturnCode_t GnuplotViewerTest::onStateUpdate(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t GnuplotViewerTest::onRateChanged(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+bool GnuplotViewerTest::runTest()
+{
+    return true;
+}
 
 
 extern "C"
@@ -234,6 +237,4 @@ extern "C"
                              RTC::Delete<GnuplotViewerTest>);
   }
   
-};
-
-
+}

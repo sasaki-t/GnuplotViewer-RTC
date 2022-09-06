@@ -1,25 +1,29 @@
 ﻿// -*- C++ -*-
+// <rtc-template block="description">
 /*!
  * @file  SinCosFunctionTest.cpp
- * @brief Sine and cosine function generator
- * @date $Date$
+ * @brief Sine and cosine function generator (test code)
  *
  * @author 佐々木毅 (Takeshi SASAKI)
  * sasaki-t(_at_)ieee.org
  *
- * $Id$
  */
+// </rtc-template>
 
 #include "SinCosFunctionTest.h"
 
 // Module specification
 // <rtc-template block="module_spec">
+#if RTM_MAJOR_VERSION >= 2
+static const char* const sincosfunction_spec[] =
+#else
 static const char* sincosfunction_spec[] =
+#endif
   {
     "implementation_id", "SinCosFunctionTest",
     "type_name",         "SinCosFunctionTest",
     "description",       "Sine and cosine function generator",
-    "version",           "1.0.0",
+    "version",           "1.1.0",
     "vendor",            "TakeshiSasaki",
     "category",          "generic",
     "activity_type",     "PERIODIC",
@@ -59,7 +63,7 @@ static const char* sincosfunction_spec[] =
 SinCosFunctionTest::SinCosFunctionTest(RTC::Manager* manager)
     // <rtc-template block="initializer">
   : RTC::DataFlowComponentBase(manager),
-    m_XSinCosDataOut("XSinCosData", m_XSinCosData)
+    m_XSinCosDataIn("XSinCosData", m_XSinCosData)
 
     // </rtc-template>
 {
@@ -110,81 +114,78 @@ RTC::ReturnCode_t SinCosFunctionTest::onFinalize()
 }
 */
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onStartup(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onShutdown(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunctionTest::onStartup(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunctionTest::onShutdown(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 /*!
  * 初期化を行う。
  */
 
-RTC::ReturnCode_t SinCosFunctionTest::onActivated(RTC::UniqueId ec_id)
+RTC::ReturnCode_t SinCosFunctionTest::onActivated(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onDeactivated(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+
+//RTC::ReturnCode_t SinCosFunctionTest::onDeactivated(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 /*!
  * x, sin(ks(x-cs*t)), cos(kc(x-cc*t))
  * (0<=x<2pi)のデータを出力する。
  */
 
-RTC::ReturnCode_t SinCosFunctionTest::onExecute(RTC::UniqueId ec_id)
+RTC::ReturnCode_t SinCosFunctionTest::onExecute(RTC::UniqueId /*ec_id*/)
 {
   return RTC::RTC_OK;
 }
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onAborting(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onError(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunctionTest::onAborting(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onReset(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onStateUpdate(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunctionTest::onError(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
-/*
-RTC::ReturnCode_t SinCosFunctionTest::onRateChanged(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
+//RTC::ReturnCode_t SinCosFunctionTest::onReset(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunctionTest::onStateUpdate(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunctionTest::onRateChanged(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+bool SinCosFunctionTest::runTest()
+{
+    return true;
+}
 
 
 extern "C"
@@ -198,6 +199,4 @@ extern "C"
                              RTC::Delete<SinCosFunctionTest>);
   }
   
-};
-
-
+}

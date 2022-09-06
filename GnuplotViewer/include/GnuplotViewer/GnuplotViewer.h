@@ -1,14 +1,14 @@
 ﻿// -*- C++ -*-
+// <rtc-template block="description">
 /*!
  * @file  GnuplotViewer.h
  * @brief Versatile viewer component using gnuplot
- * @date  $Date$
  *
  * @author 佐々木毅 (Takeshi SASAKI)
  * sasaki-t(_at_)ieee.org
  *
- * $Id$
  */
+// </rtc-template>
 
 #ifndef GNUPLOTVIEWER_H
 #define GNUPLOTVIEWER_H
@@ -28,10 +28,6 @@
 
 // </rtc-template>
 
-// Service Consumer stub headers
-// <rtc-template block="port_stub_h">
-// </rtc-template>
-
 #include <rtm/Manager.h>
 #include <rtm/DataFlowComponentBase.h>
 #include <rtm/CorbaPort.h>
@@ -44,8 +40,7 @@
 #include "gnuplot_view.h"
 #include "dynamic_port.hpp"
 
-using namespace RTC;
-
+// <rtc-template block="component_description">
 /*!
  * @class GnuplotViewer
  * @brief Versatile viewer component using gnuplot
@@ -78,6 +73,7 @@ using namespace RTC;
  * 実数値列データ。
  *
  */
+// </rtc-template>
 class GnuplotViewer
   : public RTC::DataFlowComponentBase
 {
@@ -91,7 +87,7 @@ class GnuplotViewer
   /*!
    * @brief destructor
    */
-  ~GnuplotViewer();
+  ~GnuplotViewer() override;
 
   // <rtc-template block="public_attribute">
   
@@ -101,32 +97,30 @@ class GnuplotViewer
   
   // </rtc-template>
 
+  // <rtc-template block="activity">
   /***
    *
    * The initialize action (on CREATED->ALIVE transition)
-   * formaer rtc_init_entry() 
    *
    * @return RTC::ReturnCode_t
    * 
    * 
    */
-   virtual RTC::ReturnCode_t onInitialize();
+   RTC::ReturnCode_t onInitialize() override;
 
   /***
    *
    * The finalize action (on ALIVE->END transition)
-   * formaer rtc_exiting_entry()
    *
    * @return RTC::ReturnCode_t
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onFinalize();
+  // RTC::ReturnCode_t onFinalize() override;
 
   /***
    *
    * The startup action when ExecutionContext startup
-   * former rtc_starting_entry()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -134,12 +128,11 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onStartup(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onStartup(RTC::UniqueId ec_id) override;
 
   /***
    *
    * The shutdown action when ExecutionContext stop
-   * former rtc_stopping_entry()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -147,7 +140,7 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onShutdown(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onShutdown(RTC::UniqueId ec_id) override;
 
   /***
    * Configurationのp{Short,Long,Float,Double}InPortNumの値に応じて
@@ -158,7 +151,6 @@ class GnuplotViewer
    * ンする。
    *
    * The activated action (Active state entry action)
-   * former rtc_active_entry()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -166,13 +158,12 @@ class GnuplotViewer
    * 
    * 
    */
-   virtual RTC::ReturnCode_t onActivated(RTC::UniqueId ec_id);
+   RTC::ReturnCode_t onActivated(RTC::UniqueId ec_id) override;
 
   /***
    * 動的入力ポートの削除とgnuplotのクローズを行う。
    *
    * The deactivated action (Active state exit action)
-   * former rtc_active_exit()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -180,7 +171,7 @@ class GnuplotViewer
    * 
    * 
    */
-   virtual RTC::ReturnCode_t onDeactivated(RTC::UniqueId ec_id);
+   RTC::ReturnCode_t onDeactivated(RTC::UniqueId ec_id) override;
 
   /***
    * InPortのCommandに送られてきたgnuplotのコマンドを実行する。
@@ -190,7 +181,6 @@ class GnuplotViewer
    * andに記入されたコマンドを実行する。
    *
    * The execution action that is invoked periodically
-   * former rtc_active_do()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -198,13 +188,12 @@ class GnuplotViewer
    * 
    * 
    */
-   virtual RTC::ReturnCode_t onExecute(RTC::UniqueId ec_id);
+   RTC::ReturnCode_t onExecute(RTC::UniqueId ec_id) override;
 
   /***
    * 動的入力ポートの削除とgnuplotのクローズを行う。
    *
    * The aborting action when main logic error occurred.
-   * former rtc_aborting_entry()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -212,12 +201,11 @@ class GnuplotViewer
    * 
    * 
    */
-   virtual RTC::ReturnCode_t onAborting(RTC::UniqueId ec_id);
+   RTC::ReturnCode_t onAborting(RTC::UniqueId ec_id) override;
 
   /***
    *
    * The error action in ERROR state
-   * former rtc_error_do()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -225,12 +213,11 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onError(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onError(RTC::UniqueId ec_id) override;
 
   /***
    *
    * The reset action that is invoked resetting
-   * This is same but different the former rtc_init_entry()
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -238,12 +225,11 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onReset(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onReset(RTC::UniqueId ec_id) override;
   
   /***
    *
    * The state update action that is invoked after onExecute() action
-   * no corresponding operation exists in OpenRTm-aist-0.2.0
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -251,12 +237,11 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onStateUpdate(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onStateUpdate(RTC::UniqueId ec_id) override;
 
   /***
    *
    * The action that is invoked when execution context's rate is changed
-   * no corresponding operation exists in OpenRTm-aist-0.2.0
    *
    * @param ec_id target ExecutionContext Id
    *
@@ -264,7 +249,8 @@ class GnuplotViewer
    * 
    * 
    */
-  // virtual RTC::ReturnCode_t onRateChanged(RTC::UniqueId ec_id);
+  // RTC::ReturnCode_t onRateChanged(RTC::UniqueId ec_id) override;
+  // </rtc-template>
 
 
  protected:
@@ -355,36 +341,36 @@ class GnuplotViewer
    * gnuplotに送るコマンド。
    * - Type: TimedString
    */
-  InPort<RTC::TimedString> m_CommandIn;
+  RTC::InPort<RTC::TimedString> m_CommandIn;
   /*!
    * プロットするshort型整数値列データ。
    * - Type: DynamicInPort<TimedShortSeq>
    * - Number: データに依存
    * - Unit: データに依存
    */
-  DynamicInPort<TimedShortSeq> m_ShortSeqDataIn;
+  DynamicInPort<RTC::TimedShortSeq> m_ShortSeqDataIn;
   /*!
    * プロットするlong型整数値列データ。
    * - Type: DynamicInPort<TimedLongSeq>
    * - Number: データに依存
    * - Unit: データに依存
    */
-  DynamicInPort<TimedLongSeq> m_LongSeqDataIn;
+  DynamicInPort<RTC::TimedLongSeq> m_LongSeqDataIn;
   /*!
    * プロットするfloat型実数値列データ。
    * - Type: DynamicInPort<TimedFloatSeq>
    * - Number: データに依存
    * - Unit: データに依存
    */
-  DynamicInPort<TimedFloatSeq> m_FloatSeqDataIn;
+  DynamicInPort<RTC::TimedFloatSeq> m_FloatSeqDataIn;
   /*!
    * プロットするdouble型実数値列データ。
    * - Type: DynamicInPort<TimedDoubleSeq>
    * - Number: データに依存
    * - Unit: データに依存
    */
-  DynamicInPort<TimedDoubleSeq> m_DoubleSeqDataIn;
-  
+  DynamicInPort<RTC::TimedDoubleSeq> m_DoubleSeqDataIn;
+
   // </rtc-template>
 
 
@@ -408,11 +394,12 @@ class GnuplotViewer
   
   // </rtc-template>
 
+
  private:
   // <rtc-template block="private_attribute">
-  Gnuplot gp;
-  std::vector<int> separate_list;
-  std::string periodic_cmd;
+	Gnuplot gp;
+	std::vector<int> separate_list;
+	std::string periodic_cmd;
   // </rtc-template>
 
   // <rtc-template block="private_operation">

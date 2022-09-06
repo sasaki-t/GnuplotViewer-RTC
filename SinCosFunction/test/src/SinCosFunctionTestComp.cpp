@@ -1,31 +1,34 @@
 ﻿// -*- C++ -*-
+// <rtc-template block="description">
 /*!
  * @file SinCosFunctionTestComp.cpp
- * @brief Standalone component
- * @date $Date$
+ * @brief Standalone component (test code)
  *
  * @author 佐々木毅 (Takeshi SASAKI)
  * sasaki-t(_at_)ieee.org
  *
- * $Id$
  */
+// </rtc-template>
 
 #include <rtm/Manager.h>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <rtm/CORBA_RTCUtil.h>
 #include "SinCosFunctionTest.h"
+#include "SinCosFunction.h"
 
 
 void MyModuleInit(RTC::Manager* manager)
 {
   SinCosFunctionTestInit(manager);
+  SinCosFunctionInit(manager);
   RTC::RtcBase* comp;
 
   // Create a component
   comp = manager->createComponent("SinCosFunctionTest");
 
-  if (comp==NULL)
+  if (comp==nullptr)
   {
     std::cerr << "Component create failed." << std::endl;
     abort();
@@ -74,13 +77,31 @@ void MyModuleInit(RTC::Manager* manager)
   return;
 }
 
+bool RunTest()
+{
+  RTC::RtcBase* comp;
+  RTC::Manager &mamager = RTC::Manager::instance();
+  comp = mamager.getComponent("SinCosFunctionTest0");
+  if (comp == nullptr)
+  {
+    std::cerr << "Component get failed." << std::endl;
+    return false;
+  }
+
+  SinCosFunctionTest* testcomp = dynamic_cast<SinCosFunctionTest*>(comp);
+  if (testcomp == nullptr)
+  {
+    std::cerr << "Component get failed." << std::endl;
+    return false;
+  }
+
+  return testcomp->runTest();
+}
+
 int main (int argc, char** argv)
 {
   RTC::Manager* manager;
   manager = RTC::Manager::init(argc, argv);
-
-  // Initialize manager
-  manager->init(argc, argv);
 
   // Set module initialization proceduer
   // This procedure will be invoked in activateManager() function.
@@ -91,10 +112,27 @@ int main (int argc, char** argv)
 
   // run the manager in blocking mode
   // runManager(false) is the default.
-  manager->runManager();
+  // manager->runManager();
 
   // If you want to run the manager in non-blocking mode, do like this
-  // manager->runManager(true);
+  manager->runManager(true);
 
-  return 0;
+  bool ret = RunTest();
+
+#if RTM_MAJOR_VERSION >= 2
+  manager->terminate();
+  manager->join();
+#else
+  manager->shutdown();
+#endif
+
+  
+  if (ret)
+  {
+    return 0;
+  }
+  else
+  {
+    return 1;
+  }
 }

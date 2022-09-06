@@ -1,28 +1,33 @@
 ﻿// -*- C++ -*-
+// <rtc-template block="description">
 /*!
  * @file  SinCosFunction.cpp
  * @brief Sine and cosine function generator
- * @date $Date$
  *
  * @author 佐々木毅 (Takeshi SASAKI)
  * sasaki-t(_at_)ieee.org
  *
- * $Id$
  */
+// </rtc-template>
+
+#define _USE_MATH_DEFINES //for M_PI
 #include <iostream>
 #include <cmath>
-#define _USE_MATH_DEFINES //for M_PI
 
 #include "SinCosFunction.h"
 
 // Module specification
 // <rtc-template block="module_spec">
+#if RTM_MAJOR_VERSION >= 2
+static const char* const sincosfunction_spec[] =
+#else
 static const char* sincosfunction_spec[] =
+#endif
   {
     "implementation_id", "SinCosFunction",
     "type_name",         "SinCosFunction",
     "description",       "Sine and cosine function generator",
-    "version",           "1.0.0",
+    "version",           "1.1.0",
     "vendor",            "TakeshiSasaki",
     "category",          "generic",
     "activity_type",     "PERIODIC",
@@ -30,7 +35,7 @@ static const char* sincosfunction_spec[] =
     "max_instance",      "1",
     "language",          "C++",
     "lang_type",         "compile",
-	// Configuration variables
+    // Configuration variables
     "conf.default.sWaveNum", "1.0",
     "conf.default.sPhaseVel", "1.0",
     "conf.default.cWaveNum", "1.0",
@@ -63,7 +68,6 @@ SinCosFunction::SinCosFunction(RTC::Manager* manager)
     // <rtc-template block="initializer">
   : RTC::DataFlowComponentBase(manager),
     m_XSinCosDataOut("XSinCosData", m_XSinCosData)
-
     // </rtc-template>
 {
 }
@@ -85,6 +89,7 @@ RTC::ReturnCode_t SinCosFunction::onInitialize()
   
   // Set OutPort buffer
   addOutPort("XSinCosData", m_XSinCosDataOut);
+
   
   // Set service provider to Ports
   
@@ -102,6 +107,7 @@ RTC::ReturnCode_t SinCosFunction::onInitialize()
   bindParameter("cPhaseVel", m_cPhaseVel, "1.0");
   bindParameter("SampleNum", m_SampleNum, "200");
   // </rtc-template>
+
   
   return RTC::RTC_OK;
 }
@@ -113,120 +119,108 @@ RTC::ReturnCode_t SinCosFunction::onFinalize()
 }
 */
 
-/*
-RTC::ReturnCode_t SinCosFunction::onStartup(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunction::onShutdown(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunction::onStartup(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunction::onShutdown(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 /*!
  * 初期化を行う。
  */
 
-RTC::ReturnCode_t SinCosFunction::onActivated(RTC::UniqueId ec_id)
+RTC::ReturnCode_t SinCosFunction::onActivated(RTC::UniqueId /*ec_id*/)
 {
-  t0 = coil::gettimeofday();
+	t0 = std::chrono::system_clock::now(); //start time
 
-  return RTC::RTC_OK;
+	return RTC::RTC_OK;
 }
 
-/*
-RTC::ReturnCode_t SinCosFunction::onDeactivated(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+
+//RTC::ReturnCode_t SinCosFunction::onDeactivated(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 /*!
  * x, sin(ks(x-cs*t)), cos(kc(x-cc*t))
  * (0<=x<2pi)のデータを出力する。
  */
 
-RTC::ReturnCode_t SinCosFunction::onExecute(RTC::UniqueId ec_id)
+RTC::ReturnCode_t SinCosFunction::onExecute(RTC::UniqueId /*ec_id*/)
 {
-  int i;
-  double x, t;
+	int i;
+	double x, t;
 
-  //wave number
-  double ks = m_sWaveNum;
-  double kc = m_cWaveNum;
+	//wave number
+	double ks = m_sWaveNum;
+	double kc = m_cWaveNum;
 
-  //phase velocity
-  double cs = m_sPhaseVel;
-  double cc = m_cPhaseVel;
+	//phase velocity
+	double cs = m_sPhaseVel;
+	double cc = m_cPhaseVel;
 
-  //data num
-  int data_num = m_SampleNum;
+	//data num
+	int data_num = m_SampleNum;
 
-  if (data_num <= 0) {
-    std::cerr << "Invalid parameter: SampleNum" << std::endl;
-    return RTC::RTC_OK;
-  }
+	if (data_num <= 0) {
+		std::cerr << "Invalid parameter: SampleNum" << std::endl;
+		return RTC::RTC_OK;
+	}
 
-  //set data num
-  m_XSinCosData.data.length(3 * data_num);
+	//set data num
+	m_XSinCosData.data.length(3 * data_num);
 
-  //get time stamp
-  coil::TimeValue tv = coil::gettimeofday();
-  m_XSinCosData.tm.sec = tv.sec();
-  m_XSinCosData.tm.nsec = 1000 * tv.usec();
+	std::chrono::system_clock::time_point t1 = std::chrono::system_clock::now();
+	t = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count() / 1000000.0;
 
-  t = (double)(tv.sec() - t0.sec()) + (double)(tv.usec() - t0.usec()) / 1000000.0;
+	for (i = 0; i < data_num; i++) {
+		x = (double)2 * M_PI * i / data_num;
 
-  for (i = 0; i < data_num; i++) {
-    x = (double)2 * M_PI * i / data_num;
+		m_XSinCosData.data[3 * i] = x;
+		m_XSinCosData.data[3 * i + 1] = std::sin(ks * (x - cs * t));
+		m_XSinCosData.data[3 * i + 2] = std::cos(kc * (x - cc * t));
+	}
+	m_XSinCosDataOut.write();
 
-    m_XSinCosData.data[3 * i] = x;
-    m_XSinCosData.data[3 * i + 1] = std::sin(ks*(x - cs * t));
-    m_XSinCosData.data[3 * i + 2] = std::cos(kc*(x - cc * t));
-  }
-  m_XSinCosDataOut.write();
-
-  return RTC::RTC_OK;
+	return RTC::RTC_OK;
 }
 
-/*
-RTC::ReturnCode_t SinCosFunction::onAborting(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunction::onError(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunction::onAborting(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
-/*
-RTC::ReturnCode_t SinCosFunction::onReset(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
 
-/*
-RTC::ReturnCode_t SinCosFunction::onStateUpdate(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+//RTC::ReturnCode_t SinCosFunction::onError(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
-/*
-RTC::ReturnCode_t SinCosFunction::onRateChanged(RTC::UniqueId ec_id)
-{
-  return RTC::RTC_OK;
-}
-*/
+
+//RTC::ReturnCode_t SinCosFunction::onReset(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunction::onStateUpdate(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
+
+
+//RTC::ReturnCode_t SinCosFunction::onRateChanged(RTC::UniqueId /*ec_id*/)
+//{
+//  return RTC::RTC_OK;
+//}
 
 
 
@@ -241,6 +235,4 @@ extern "C"
                              RTC::Delete<SinCosFunction>);
   }
   
-};
-
-
+}
